@@ -18,7 +18,7 @@ var logger = logger.create( 'App', {
   transports: [
     loglog.transports.console()
   , require('loglog-mongodb')({
-      connectionString: 'mongodb://my_host/my_db'
+      connection: 'mongodb://my_host/my_db'
     })
   ]
 });
