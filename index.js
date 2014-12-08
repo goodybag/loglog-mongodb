@@ -7,6 +7,10 @@ module.exports = function( options ){
 
   var defaults = {
     collection: 'logs'
+  , collectionOptions: {
+      capped: true
+    , size: 1000 * 1000 * 1000 * 4
+    }
   };
 
   for ( var key in defaults ){
@@ -23,7 +27,12 @@ module.exports = function( options ){
       if ( error ) return callback( error );
 
       _db = db;
-      callback( null, db );
+
+      db.createCollection( options.collection, options.collectionOptions, function( error, collection ){
+        if ( error ) return callback( error );
+
+        return callback( null, db );
+      });
     });
   };
 
