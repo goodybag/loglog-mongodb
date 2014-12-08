@@ -20,7 +20,7 @@ module.exports = function( options ){
   }
 
   var _db;
-  var getDB = function( callback ){
+  var getDb = function( callback ){
     if ( _db ) return callback( null, _db );
 
     MongoClient.connect( options.connection, function( error, db ){
@@ -37,7 +37,7 @@ module.exports = function( options ){
   };
 
   return function( entry ){
-    getDB( function( error, db ){
+    getDb( function( error, db ){
       if ( error ) throw error;
 
       db.collection( options.collection ).insert( entry, { safe: false } );
