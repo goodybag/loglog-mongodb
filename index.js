@@ -7,6 +7,10 @@ module.exports = function( options ){
 
   var defaults = {
     collection: 'logs'
+  , collectionOptions: {
+      capped: true
+    , size: 1000 * 1000 * 1000 * 4
+    }
   };
 
   for ( var key in defaults ){
@@ -16,19 +20,24 @@ module.exports = function( options ){
   }
 
   var _db;
-  var getDb = function( callback ){
+  var getCollection = function( callback ){
     if ( _db ) return callback( null, _db );
 
     MongoClient.connect( options.connection, function( error, db ){
       if ( error ) return callback( error );
 
       _db = db;
-      callback( null, db );
+
+      db.createCollection( options.collection, options.collectionOptions, function( error, collection ){
+        if ( error ) return callback( error );
+
+        return callback( null, db );
+      });
     });
   };
 
   return function( entry ){
-    getDb( function( error, db ){
+    getCollection( function( error, db ){
       if ( error ) throw error;
 
       db.collection( options.collection ).insert( entry, { safe: false } );
