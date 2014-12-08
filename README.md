@@ -18,7 +18,7 @@ var logger = logger.create( 'App', {
   transports: [
     loglog.transports.console()
   , require('loglog-mongodb')({
-      connectionString: 'mongodb://my_host/my_db'
+      connection: 'mongodb://my_host/my_db'
     , collection: 'logs' // (default)
       // See all options for db.createCollection()
       // http://mongodb.github.io/node-mongodb-native/2.0/api-docs
